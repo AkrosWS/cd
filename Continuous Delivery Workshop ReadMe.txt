@@ -1,0 +1,32 @@
+cd
+==
+
+Continuous Deliviery Workshop
+
+
+This repo is to show how Continuous Deliviery could look like. Below are the steps / todo which have been done to get here.
+
+
+
+Steps:
+1. Download Eclipse Kepler https://www.eclipse.org/downloads/packages/eclipse-standard-432/keplersr2
+2. Get JBOSS TOOLs from the Marketplace
+3. Get any ohter plugin you want
+4. Create Java EE WEB Project from JBoss Central
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+- Create RIO Server Session Bean
+- Create RIO Client Session Bean
+- Change Interface
+- Prepare Intermediate Steps for Workshop
