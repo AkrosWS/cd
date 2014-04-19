@@ -25,8 +25,12 @@ Steps:
 
 
 TODO
-
 - Create RIO Server Session Bean
+	- Implement Dice
+		- Needs to return a random number between 1 and 6
+	- Implement Game
+	- Define Callback
+	- Define Game Subscription
 - Create RIO Client Session Bean
 - Change Interface
 - Prepare Intermediate Steps for Workshop
