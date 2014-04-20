@@ -14,6 +14,7 @@ Steps:
 3. Get any ohter plugin you want
 4. Create Java EE WEB Project from JBoss Central
 5. Verify CDI works in JUnit test. Got to change cdi version to 1.1 and add org.jglue.cdi-unit as a test dependency
+6. Dice implemented each toss returns random number between 1 and 6
 
 
 
@@ -26,8 +27,7 @@ Steps:
 
 TODO
 - Create RIO Server Session Bean
-	- Implement Dice
-		- Needs to return a random number between 1 and 6
+	- Implement Board
 	- Implement Game
 	- Define Callback
 	- Define Game Subscription
