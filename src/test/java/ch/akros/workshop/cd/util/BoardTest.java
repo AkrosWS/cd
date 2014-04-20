@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 /**
  * 
  * 1. DONE Board has 5 places which can hold only stick (1-5) 
- * 2. Board has a bucket which has no limitation on how many stick it can hold (6) 
+ * 2. DONE Board has a bucket which has no limitation on how many stick it can hold (6) 
  * 3. DONE Done Try to put a stick on a specific number, if place is empty it returns 0, otherwise 2 sticks. 
  * 3a. DONE Put one in a empty Board shall return zero.
  * 3b. DONE Put a second one onto the same place return two.
@@ -33,20 +33,17 @@ public class BoardTest {
 
 	@Test
 	public void whenEmptyBoardAndPutInPlaceOneThenSticksReturnedZero() {
-		int place = 1;
-		assertReturnZeroOnFirstPlacement(place);
+		assertReturnZeroOnFirstPlacement(1);
 	}
 
 	@Test
 	public void whenEmptyBoardAndPutTwoInPlaceOneThenSticksReturnedTwo() {
-		int place = 1;
-		assertReturnTwoOnTwoPlacements(place);
+		assertReturnTwoOnTwoPlacements(1);
 	}
 
 	@Test
 	public void whenEmtpyBoardAndPutThreeTimesInPlaceOneThenSticksReturnedZero() {
-		int place = 1;
-		assertReturnZeroOnThreePlacements(place);
+		assertReturnZeroOnThreePlacements(1);
 
 	}
 
@@ -71,9 +68,32 @@ public class BoardTest {
 		}
 	}
 
+	@Test
+	public void whenEmptyBoardAndPutInPlaceSixThenSticksReturnedZero() {
+		int sticksReturned = putAStick(6);
+
+		assertEquals("Returned sticks for place 6 is the first time not zero", 0, sticksReturned);
+	}
+
+	@Test
+	public void whenEmptyBoardAndPutTwoInPlaceSixThenSticksReturnedZero() {
+		putAStick(6);
+		int sticksReturned = putAStick(6);
+
+		assertEquals("Returned sticks for place 6 is the second time not zero", 0, sticksReturned);
+	}
+
+	@Test
+	public void whenEmptyBoardAndPutThreeInPlaceSixThenSticksReturnedZero() {
+		putAStick(6);
+		putAStick(6);
+		int sticksReturned = putAStick(6);
+
+		assertEquals("Returned sticks for place 6 is the third time not zero", 0, sticksReturned);
+	}
+
 	private int putAStick(int place) {
-		int stickReturned = testee.put(place);
-		return stickReturned;
+		return testee.put(place);
 	}
 
 	private void assertReturnZeroOnFirstPlacement(int place) {
