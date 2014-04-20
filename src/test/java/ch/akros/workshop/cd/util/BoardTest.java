@@ -1,7 +1,6 @@
 package ch.akros.workshop.cd.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 import javax.inject.Inject;
 
@@ -18,7 +17,7 @@ import org.junit.runner.RunWith;
  * 3a. DONE Put one in a empty Board shall return zero.
  * 3b. DONE Put a second one onto the same place return two.
  * 4. If place was not empty it is afterwards as the stick was returned to the player. 
- * 5. list the state of the board. (1-5)
+ * 5. DONE list the state of the board. (1-5), do not show internal state therefore remove.
  * 5a. DONE list size is 5
  * 5b. DONE new Board all places are empty
  * 
@@ -29,21 +28,6 @@ import org.junit.runner.RunWith;
 public class BoardTest {
 	@Inject
 	private Board testee;
-
-	@Test
-	public void ensureBoardListSizeIs5() {
-		boolean board[] = testee.getBoardList();
-		assertEquals("Board size is not 5", 5, board.length);
-	}
-
-	@Test
-	public void whenNewBoardThenListEmpty() {
-		boolean board[] = testee.getBoardList();
-
-		for (int i = 0; i < board.length; i++) {
-			assertFalse("Board place " + (i + 1) + " is not empty", board[i]);
-		}
-	}
 
 	@Test
 	public void whenEmptyBoardAndPutInPlaceOneThenSticksReturnedZero() {
