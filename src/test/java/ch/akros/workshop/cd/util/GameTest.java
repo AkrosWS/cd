@@ -1,20 +1,26 @@
 package ch.akros.workshop.cd.util;
 
-import javax.inject.Inject;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.jglue.cdiunit.CdiRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 //@formatter:off
 /**
 * 
 * 1. DONE Player can subscribe to the next game
-* 2. Start a new game once there are two player subscribed.
+* 1a.DONE Log when a new player subscribes
+* 2. Start Game
+* 2a.Game can not be started before two players have subscribed
+* 2b.Log status change on a game.
 * 3. Log which player won
 * 4. At the end of a game start a new game with all the subscribed once. Player from the finished game are automatically re-subscribed.
 * 5. call back player to decide if he wants to toss again.
+* 6. Create a GameLogger to separate the logging from the game so that it can be validated
 * 
 * 
 */
@@ -22,15 +28,28 @@ import org.mockito.Mock;
 @RunWith(CdiRunner.class)
 public class GameTest {
 
-	@Inject
-	private Game testee;
-
 	@Mock
 	private Player playerI;
+
+	@Mock
+	private GameLogger gameLogger;
+
+	@InjectMocks
+	private Game testee;
 
 	@Test
 	public void ensurePlayerCanSubscribeWithoutException() {
 		testee.subscribe(playerI);
+	}
+
+	@Test
+	public void whenPlayerSubscribesThenGameLoggerIsNotified() {
+		String playerIName = "Player 1";
+		when(playerI.getName()).thenReturn(playerIName);
+
+		testee.subscribe(playerI);
+
+		verify(gameLogger).newSubscribtion(playerIName);
 	}
 
 }
