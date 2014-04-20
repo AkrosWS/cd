@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
  * 2. Board has a bucket which has no limitation on how many stick it can hold (6) 
  * 3. Try to put a stick on a specific number, if place is empty it returns 0, otherwise 2 sticks. 
  * 3a. DONE Put one in a empty Board shall return zero.
+ * 3b. DONE Put a second one onto the same place return two.
  * 4. If place was not empty it is afterwards as the stick was returned to the player. 
  * 5. list the state of the board. (1-5)
  * 5a. DONE list size is 5
@@ -49,6 +50,14 @@ public class BoardTest {
 		int stickReturned = testee.put(1);
 
 		assertEquals("Returned sticks are not zero", 0, stickReturned);
+	}
+
+	@Test
+	public void whenEmptyBoardAndPutTwoInPlaceOneThenSticksReturnedTwo() {
+		testee.put(1);
+		int stickReturned = testee.put(1);
+
+		assertEquals("Returned sticks are not two", 2, stickReturned);
 	}
 
 }
