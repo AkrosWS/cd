@@ -23,4 +23,12 @@ public class DiceTest {
 
 	}
 
+	@Test(timeout = 10000)
+	public void ensureDiceReturnsAllValidNumbersWithin10s() {
+
+		for (int i = 1; i < 7; i++) {
+			while (i != testee.toss())
+				;
+		}
+	}
 }
