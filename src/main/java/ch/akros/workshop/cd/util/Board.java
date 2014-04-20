@@ -6,6 +6,7 @@ public class Board {
 	public int put(int i) {
 		int position = i - 1;
 		if (places[position]) {
+			places[position] = false;
 			return 2;
 		}
 		places[position] = true;
