@@ -1,9 +1,11 @@
 package ch.akros.workshop.cd.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 import javax.inject.Inject;
 
 import org.jglue.cdiunit.CdiRunner;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -16,6 +18,7 @@ import org.junit.runner.RunWith;
  * 4. If place was not empty it is afterwards as the stick was returned to the player. 
  * 5. list the state of the board. (1-5)
  * 5a. DONE list size is 5
+ * 5b. DONE new Board all places are empty
  * 
  */
 //@formatter:on
@@ -28,7 +31,16 @@ public class BoardTest {
 	@Test
 	public void ensureBoardListSizeIs5() {
 		boolean board[] = testee.getBoardList();
-		Assert.assertEquals("Board size is not 5", 5, board.length);
+		assertEquals("Board size is not 5", 5, board.length);
+	}
+
+	@Test
+	public void whenNewBoardThenListEmpty() {
+		boolean board[] = testee.getBoardList();
+
+		for (int i = 0; i < board.length; i++) {
+			assertFalse("Board place " + (i + 1) + " is not empty", board[i]);
+		}
 	}
 
 }
