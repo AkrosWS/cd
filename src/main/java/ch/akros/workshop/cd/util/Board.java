@@ -6,4 +6,8 @@ public class Board {
 		return new boolean[5];
 	}
 
+	public int put(int i) {
+		return 0;
+	}
+
 }
