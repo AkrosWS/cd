@@ -33,26 +33,29 @@ public class BoardTest {
 
 	@Test
 	public void whenEmptyBoardAndPutInPlaceOneThenSticksReturnedZero() {
-		int stickReturned = testee.put(1);
+		int place = 1;
+		int stickReturned = testee.put(place);
 
-		assertEquals("Returned sticks are not zero", 0, stickReturned);
+		assertEquals("Returned sticks are not zero on place " + place, 0, stickReturned);
 	}
 
 	@Test
 	public void whenEmptyBoardAndPutTwoInPlaceOneThenSticksReturnedTwo() {
-		testee.put(1);
-		int stickReturned = testee.put(1);
+		int place = 1;
+		testee.put(place);
+		int stickReturned = testee.put(place);
 
-		assertEquals("Returned sticks are not two", 2, stickReturned);
+		assertEquals("Returned sticks are not two on place " + place, 2, stickReturned);
 	}
 
 	@Test
 	public void whenEmtpyBoardAndPutThreeTimesInPlaceOneThenSticksReturnedZero() {
-		testee.put(1);
-		testee.put(1);
-		int stickReturned = testee.put(1);
+		int place = 1;
+		testee.put(place);
+		testee.put(place);
+		int stickReturned = testee.put(place);
 
-		assertEquals("Returned sticks after putting 3 sticks are not zero", 0, stickReturned);
+		assertEquals("Returned sticks after putting 3 sticks are not zero on place " + place, 0, stickReturned);
 
 	}
 }
