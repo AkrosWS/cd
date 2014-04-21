@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
+
 public class Game {
 	@Inject
 	private GameLogger gameLogger;
@@ -16,6 +18,13 @@ public class Game {
 		if (isNew) {
 			gameLogger.newSubscribtion(player.getName());
 		}
+	}
+
+	public void start() throws NotEnoughPlayerException {
+		if (players.size() < 2) {
+			throw new NotEnoughPlayerException("Only " + players.size() + " players registered. At least 2 are needed");
+		}
+
 	}
 
 }

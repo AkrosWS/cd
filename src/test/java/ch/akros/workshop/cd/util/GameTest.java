@@ -9,13 +9,15 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
+
 //@formatter:off
 /**
 * 
 * 1. DONE Player can subscribe to the next game
 * 1a.DONE Log when a new player subscribes
 * 2. Start Game
-* 2a.Game can not be started before two players have subscribed
+* 2a.DONE Game can not be started before two players have subscribed
 * 2b.Log status change on a game.
 * 3. Log which player won
 * 4. At the end of a game start a new game with all the subscribed once. Player from the finished game are automatically re-subscribed.
@@ -44,12 +46,25 @@ public class GameTest {
 
 	@Test
 	public void whenPlayerSubscribesThenGameLoggerIsNotified() {
-		String playerIName = "Player 1";
-		when(playerI.getName()).thenReturn(playerIName);
+		preparePlayerIMock();
 
 		testee.subscribe(playerI);
 
-		verify(gameLogger).newSubscribtion(playerIName);
+		verify(gameLogger).newSubscribtion(playerI.getName());
 	}
 
+	@Test(expected = NotEnoughPlayerException.class)
+	public void whenPlayerSubscribedStartGameThenNotEnoughPlayerExceptionThrown() throws NotEnoughPlayerException {
+		preparePlayerIMock();
+
+		testee.subscribe(playerI);
+
+		testee.start();
+
+	}
+
+	private void preparePlayerIMock() {
+		String playerIName = "Player 1";
+		when(playerI.getName()).thenReturn(playerIName);
+	}
 }
