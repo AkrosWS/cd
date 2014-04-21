@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
  * 5a. DONE list size is 5
  * 5b. DONE new Board all places are empty
  * 6. DONE All places (1-5) shall behave the same
+ * 7. DONE After clear board is empty again
  * 
  */
 //@formatter:on
@@ -90,6 +91,17 @@ public class BoardTest {
 		int sticksReturned = putAStick(6);
 
 		assertEquals("Returned sticks for place 6 is the third time not zero", 0, sticksReturned);
+	}
+
+	@Test
+	public void whenAllSpacesHaveAStickAndClearThenAllAreEmptyAgain() {
+		for (int i = 1; i < 6; i++) {
+			assertReturnZeroOnFirstPlacement(i);
+		}
+		testee.clear();
+		for (int i = 1; i < 6; i++) {
+			assertReturnZeroOnFirstPlacement(i);
+		}
 	}
 
 	private int putAStick(int place) {

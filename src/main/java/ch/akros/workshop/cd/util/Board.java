@@ -18,4 +18,9 @@ public class Board {
 		return 0;
 	}
 
+	public void clear() {
+		places = new boolean[5];
+
+	}
+
 }
