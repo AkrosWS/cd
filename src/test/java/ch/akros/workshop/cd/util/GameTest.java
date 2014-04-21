@@ -1,8 +1,13 @@
 package ch.akros.workshop.cd.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.List;
 
 import org.jglue.cdiunit.CdiRunner;
 import org.junit.Test;
@@ -27,6 +32,7 @@ import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
 * 6. Create a GameLogger to separate the logging from the game so that it can be validated
 * 7. Run the game
 * 7a.DONE First player manages to put all his stick, win.
+* 7b.DONE Second player manages to put all his stick, win.
 * 
 * 
 */
@@ -107,6 +113,32 @@ public class GameTest {
 		verify(board).put(2);
 		verify(board).put(1);
 
+	}
+
+	@Test
+	public void whenGameStartAndSecondPlayerPutsAllStickThenThisPlayerWins() throws NotEnoughPlayerException {
+		prepareTwoPlayerGame();
+
+		when(dice.toss()).thenReturn(1, 1, 6);
+		when(board.put(1)).thenReturn(0, 2);
+
+		testee.run();
+
+		verify(board).clear();
+
+		ArgumentCaptor<Player> winningPlayer = ArgumentCaptor.forClass(Player.class);
+		verify(gameLogger).playerWon(winningPlayer.capture());
+		verify(winningPlayer.getValue(), times(5)).keepPlaying();
+		verify(dice, times(8)).toss();
+		ArgumentCaptor<Player> playersTurn = ArgumentCaptor.forClass(Player.class);
+		verify(gameLogger, atLeastOnce()).turn(playersTurn.capture());
+
+		List<Player> playersTurnList = playersTurn.getAllValues();
+		assertEquals("First und second turn are not played be the same player", playersTurnList.get(0), playersTurnList.get(1));
+		assertTrue("The next six turns are not played by the same player or not the winning player",
+				((winningPlayer.getValue().equals(playersTurnList.get(2))) && (winningPlayer.getValue().equals(playersTurnList.get(3)))
+						&& (winningPlayer.getValue().equals(playersTurnList.get(4))) && (winningPlayer.getValue().equals(playersTurnList.get(5)))
+						&& (winningPlayer.getValue().equals(playersTurnList.get(6))) && (winningPlayer.getValue().equals(playersTurnList.get(7)))));
 	}
 
 	private void preparePlayerMock(Player player, String playerName) {

@@ -37,11 +37,13 @@ public class Game {
 
 		// while (true) {
 		for (Entry<Player, Integer> currentPlayer : players.entrySet()) {
+			gameLogger.turn(currentPlayer.getKey());
 			int toss = dice.toss();
 			int sticksReturned = board.put(toss);
 			updatePlayerSticks(currentPlayer, sticksReturned);
 
 			while ((!won(currentPlayer)) && (sticksReturned == 0) && (currentPlayer.getKey().keepPlaying())) {
+				gameLogger.turn(currentPlayer.getKey());
 				toss = dice.toss();
 				sticksReturned = board.put(toss);
 				updatePlayerSticks(currentPlayer, sticksReturned);

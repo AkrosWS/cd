@@ -8,4 +8,6 @@ public interface GameLogger {
 
 	void playerWon(Player key);
 
+	void turn(Player capture);
+
 }
