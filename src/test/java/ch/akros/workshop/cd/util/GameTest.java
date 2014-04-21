@@ -92,7 +92,7 @@ public class GameTest {
 
 		testee.run();
 
-		verify(gameLogger).gameReady();
+		verify(gameLogger).gameStarts();
 	}
 
 	@Test

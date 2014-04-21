@@ -4,11 +4,11 @@ public interface GameLogger {
 
 	void newSubscribtion(String anyString);
 
-	void gameReady();
+	void gameStarts();
 
-	void playerWon(Player key);
+	void playerWon(Player winner);
 
-	void turn(Player capture);
+	void turn(Player player);
 
 	void gameNotReady(String explanation);
 
