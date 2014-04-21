@@ -25,6 +25,7 @@ public class Game {
 			throw new NotEnoughPlayerException("Only " + players.size() + " players registered. At least 2 are needed");
 		}
 
+		gameLogger.gameReady();
 	}
 
 }

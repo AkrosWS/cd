@@ -18,7 +18,7 @@ import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
 * 1a.DONE Log when a new player subscribes
 * 2. Start Game
 * 2a.DONE Game can not be started before two players have subscribed
-* 2b.Log status change on a game.
+* 2b.DONE Log status change on a game.
 * 3. Log which player won
 * 4. At the end of a game start a new game with all the subscribed once. Player from the finished game are automatically re-subscribed.
 * 5. call back player to decide if he wants to toss again.
@@ -32,6 +32,9 @@ public class GameTest {
 
 	@Mock
 	private Player playerI;
+
+	@Mock
+	private Player playerII;
 
 	@Mock
 	private GameLogger gameLogger;
@@ -63,8 +66,28 @@ public class GameTest {
 
 	}
 
+	@Test
+	public void whenTwoPlayerAndGameStartThenGameLoggerReady() throws NotEnoughPlayerException {
+		preparePlayerIMock();
+		preparePlayerIIMock();
+
+		testee.subscribe(playerI);
+		testee.subscribe(playerII);
+
+		testee.start();
+
+		verify(gameLogger).gameReady();
+	}
+
+	private void preparePlayerMock(Player player, String playerName) {
+		when(player.getName()).thenReturn(playerName);
+	}
+
 	private void preparePlayerIMock() {
-		String playerIName = "Player 1";
-		when(playerI.getName()).thenReturn(playerIName);
+		preparePlayerMock(playerI, "Player 1");
+	}
+
+	private void preparePlayerIIMock() {
+		preparePlayerMock(playerII, "Player 2");
 	}
 }

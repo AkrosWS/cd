@@ -4,4 +4,6 @@ public interface GameLogger {
 
 	void newSubscribtion(String anyString);
 
+	void gameReady();
+
 }
