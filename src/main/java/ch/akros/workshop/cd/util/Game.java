@@ -35,25 +35,25 @@ public class Game {
 		gameLogger.gameReady();
 		board.clear();
 
-		// while (true) {
-		for (Entry<Player, Integer> currentPlayer : players.entrySet()) {
-			gameLogger.turn(currentPlayer.getKey());
-			int toss = dice.toss();
-			int sticksReturned = board.put(toss);
-			updatePlayerSticks(currentPlayer, sticksReturned);
-
-			while ((!won(currentPlayer)) && (sticksReturned == 0) && (currentPlayer.getKey().keepPlaying())) {
+		while (true) {
+			for (Entry<Player, Integer> currentPlayer : players.entrySet()) {
 				gameLogger.turn(currentPlayer.getKey());
-				toss = dice.toss();
-				sticksReturned = board.put(toss);
+				int toss = dice.toss();
+				int sticksReturned = board.put(toss);
 				updatePlayerSticks(currentPlayer, sticksReturned);
-			}
-			if (won(currentPlayer)) {
-				gameLogger.playerWon(currentPlayer.getKey());
-				return;
+
+				while ((!won(currentPlayer)) && (sticksReturned == 0) && (currentPlayer.getKey().keepPlaying())) {
+					gameLogger.turn(currentPlayer.getKey());
+					toss = dice.toss();
+					sticksReturned = board.put(toss);
+					updatePlayerSticks(currentPlayer, sticksReturned);
+				}
+				if (won(currentPlayer)) {
+					gameLogger.playerWon(currentPlayer.getKey());
+					return;
+				}
 			}
 		}
-		// }
 	}
 
 	private boolean won(Entry<Player, Integer> currentPlayer) {
@@ -64,7 +64,7 @@ public class Game {
 		if (sticksReturned == 0) {
 			currentPlayer.setValue(currentPlayer.getValue() - 1);
 		} else {
-			currentPlayer.setValue(currentPlayer.getValue() + 2);
+			currentPlayer.setValue(currentPlayer.getValue() + 1);
 		}
 	}
 }

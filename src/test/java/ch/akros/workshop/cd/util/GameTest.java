@@ -26,13 +26,14 @@ import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
 * 2. Start Game
 * 2a.DONE Game can not be started before two players have subscribed
 * 2b.DONE Log status change on a game.
-* 3. Log which player won
+* 3. DONE Log which player won
 * 4. At the end of a game start a new game with all the subscribed once. Player from the finished game are automatically re-subscribed.
-* 5. call back player to decide if he wants to toss again.
-* 6. Create a GameLogger to separate the logging from the game so that it can be validated
-* 7. Run the game
+* 5. DONE call back player to decide if he wants to toss again.
+* 6. DONECreate a GameLogger to separate the logging from the game so that it can be validated
+* 7. DONE Run the game
 * 7a.DONE First player manages to put all his stick, win.
 * 7b.DONE Second player manages to put all his stick, win.
+* 7c.DONE First player wins in second round.
 * 
 * 
 */
@@ -134,11 +135,35 @@ public class GameTest {
 		verify(gameLogger, atLeastOnce()).turn(playersTurn.capture());
 
 		List<Player> playersTurnList = playersTurn.getAllValues();
-		assertEquals("First und second turn are not played be the same player", playersTurnList.get(0), playersTurnList.get(1));
+		assertEquals("First and second turn are not played be the same player", playersTurnList.get(0), playersTurnList.get(1));
 		assertTrue("The next six turns are not played by the same player or not the winning player",
 				((winningPlayer.getValue().equals(playersTurnList.get(2))) && (winningPlayer.getValue().equals(playersTurnList.get(3)))
 						&& (winningPlayer.getValue().equals(playersTurnList.get(4))) && (winningPlayer.getValue().equals(playersTurnList.get(5)))
 						&& (winningPlayer.getValue().equals(playersTurnList.get(6))) && (winningPlayer.getValue().equals(playersTurnList.get(7)))));
+	}
+
+	@Test
+	public void whenGameStartAndFirstPlayerPutsAllStickInSecondRoundThenThisPlayerWins() throws NotEnoughPlayerException {
+		prepareTwoPlayerGame();
+
+		when(dice.toss()).thenReturn(1, 1, 2, 2, 6);
+		when(board.put(1)).thenReturn(0, 2);
+		when(board.put(2)).thenReturn(0, 2);
+
+		testee.run();
+
+		verify(board).clear();
+
+		ArgumentCaptor<Player> winningPlayer = ArgumentCaptor.forClass(Player.class);
+		verify(gameLogger).playerWon(winningPlayer.capture());
+		verify(winningPlayer.getValue(), times(6)).keepPlaying();
+		verify(dice, times(10)).toss();
+		ArgumentCaptor<Player> playersTurn = ArgumentCaptor.forClass(Player.class);
+		verify(gameLogger, atLeastOnce()).turn(playersTurn.capture());
+
+		List<Player> playersTurnList = playersTurn.getAllValues();
+		assertEquals("First turn are not played be the winning player", winningPlayer.getValue(), playersTurnList.get(0));
+
 	}
 
 	private void preparePlayerMock(Player player, String playerName) {
