@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.ejb.Schedule;
 import javax.inject.Inject;
 
 import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
@@ -53,6 +54,15 @@ public class Game {
 					return;
 				}
 			}
+		}
+	}
+
+	@Schedule(second = "*/5")
+	public void timer() {
+		try {
+			run();
+		} catch (NotEnoughPlayerException e) {
+			gameLogger.gameNotReady();
 		}
 	}
 

@@ -26,14 +26,16 @@ import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
 * 2. Start Game
 * 2a.DONE Game can not be started before two players have subscribed
 * 2b.DONE Log status change on a game.
+* 2c.DONE Start Game every five second. 
 * 3. DONE Log which player won
-* 4. At the end of a game start a new game with all the subscribed once. Player from the finished game are automatically re-subscribed.
+* 4. DONE At the end of a game start a new game with all the subscribed once. Player from the finished game are automatically re-subscribed.(Not a good Idea, new Game shall starts ever 5s)
 * 5. DONE call back player to decide if he wants to toss again.
 * 6. DONECreate a GameLogger to separate the logging from the game so that it can be validated
 * 7. DONE Run the game
 * 7a.DONE First player manages to put all his stick, win.
 * 7b.DONE Second player manages to put all his stick, win.
 * 7c.DONE First player wins in second round.
+* 8. Ensure not two games can run at the same time.
 * 
 * 
 */
