@@ -17,6 +17,7 @@ Steps:
 5. Verify CDI works in JUnit test. Got to change cdi version to 1.1 and add org.jglue.cdi-unit as a test dependency
 6. Dice implemented each toss returns random number between 1 and 6
 7. Board implemented for spaces 1-6
+8. Game Implemented
 
 
 
@@ -28,7 +29,6 @@ Steps:
 
 TODO
 - Create RIO Server Session Bean
-	- Implement Game
 	- Define Callback
 	- Define Game Subscription
 - Create RIO Client Session Bean
