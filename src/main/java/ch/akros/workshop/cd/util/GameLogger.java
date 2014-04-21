@@ -6,4 +6,6 @@ public interface GameLogger {
 
 	void gameReady();
 
+	void playerWon(Player key);
+
 }

@@ -1,7 +1,8 @@
 package ch.akros.workshop.cd.util;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.inject.Inject;
 
@@ -11,21 +12,57 @@ public class Game {
 	@Inject
 	private GameLogger gameLogger;
 
-	private Set<Player> players = new HashSet<Player>();
+	@Inject
+	private Dice dice;
+
+	@Inject
+	private Board board;
+
+	private Map<Player, Integer> players = new HashMap<Player, Integer>();
 
 	public void subscribe(Player player) {
-		boolean isNew = players.add(player);
-		if (isNew) {
+		Integer oldState = players.put(player, Integer.valueOf(6));
+		if (oldState == null) {
 			gameLogger.newSubscribtion(player.getName());
 		}
 	}
 
-	public void start() throws NotEnoughPlayerException {
+	public void run() throws NotEnoughPlayerException {
 		if (players.size() < 2) {
 			throw new NotEnoughPlayerException("Only " + players.size() + " players registered. At least 2 are needed");
 		}
 
 		gameLogger.gameReady();
+		board.clear();
+
+		// while (true) {
+		for (Entry<Player, Integer> currentPlayer : players.entrySet()) {
+			int toss = dice.toss();
+			int sticksReturned = board.put(toss);
+			updatePlayerSticks(currentPlayer, sticksReturned);
+
+			while ((!won(currentPlayer)) && (sticksReturned == 0) && (currentPlayer.getKey().keepPlaying())) {
+				toss = dice.toss();
+				sticksReturned = board.put(toss);
+				updatePlayerSticks(currentPlayer, sticksReturned);
+			}
+			if (won(currentPlayer)) {
+				gameLogger.playerWon(currentPlayer.getKey());
+				return;
+			}
+		}
+		// }
 	}
 
+	private boolean won(Entry<Player, Integer> currentPlayer) {
+		return currentPlayer.getValue().equals(0);
+	}
+
+	private void updatePlayerSticks(Entry<Player, Integer> currentPlayer, int sticksReturned) {
+		if (sticksReturned == 0) {
+			currentPlayer.setValue(currentPlayer.getValue() - 1);
+		} else {
+			currentPlayer.setValue(currentPlayer.getValue() + 2);
+		}
+	}
 }

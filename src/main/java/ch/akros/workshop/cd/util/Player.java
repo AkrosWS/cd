@@ -4,4 +4,6 @@ public interface Player {
 
 	String getName();
 
+	boolean keepPlaying();
+
 }
