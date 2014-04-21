@@ -10,6 +10,6 @@ public interface GameLogger {
 
 	void turn(Player capture);
 
-	void gameNotReady();
+	void gameNotReady(String explanation);
 
 }

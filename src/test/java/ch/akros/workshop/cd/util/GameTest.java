@@ -16,6 +16,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import ch.akros.workshop.cd.exception.GameAlreadyInPlayException;
 import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
 
 //@formatter:off
@@ -35,7 +36,7 @@ import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
 * 7a.DONE First player manages to put all his stick, win.
 * 7b.DONE Second player manages to put all his stick, win.
 * 7c.DONE First player wins in second round.
-* 8. Ensure not two games can run at the same time.
+* 8. DONE Ensure not two games can run at the same time.
 * 
 * 
 */
@@ -76,7 +77,7 @@ public class GameTest {
 	}
 
 	@Test(expected = NotEnoughPlayerException.class)
-	public void whenPlayerSubscribedStartGameThenNotEnoughPlayerExceptionThrown() throws NotEnoughPlayerException {
+	public void whenPlayerSubscribedStartGameThenNotEnoughPlayerExceptionThrown() throws NotEnoughPlayerException, GameAlreadyInPlayException {
 		preparePlayerIMock();
 
 		testee.subscribe(playerI);
@@ -86,7 +87,7 @@ public class GameTest {
 	}
 
 	@Test
-	public void whenTwoPlayerAndGameStartThenGameLoggerReady() throws NotEnoughPlayerException {
+	public void whenTwoPlayerAndGameStartThenGameLoggerReady() throws NotEnoughPlayerException, GameAlreadyInPlayException {
 		prepareTwoPlayerGame();
 
 		testee.run();
@@ -95,7 +96,7 @@ public class GameTest {
 	}
 
 	@Test
-	public void whenGameStartAndFirstPlayerPutsAllStickThenThisPlayerWins() throws NotEnoughPlayerException {
+	public void whenGameStartAndFirstPlayerPutsAllStickThenThisPlayerWins() throws NotEnoughPlayerException, GameAlreadyInPlayException {
 		prepareTwoPlayerGame();
 
 		when(dice.toss()).thenReturn(6, 5, 4, 3, 2, 1);
@@ -119,7 +120,7 @@ public class GameTest {
 	}
 
 	@Test
-	public void whenGameStartAndSecondPlayerPutsAllStickThenThisPlayerWins() throws NotEnoughPlayerException {
+	public void whenGameStartAndSecondPlayerPutsAllStickThenThisPlayerWins() throws NotEnoughPlayerException, GameAlreadyInPlayException {
 		prepareTwoPlayerGame();
 
 		when(dice.toss()).thenReturn(1, 1, 6);
@@ -145,7 +146,7 @@ public class GameTest {
 	}
 
 	@Test
-	public void whenGameStartAndFirstPlayerPutsAllStickInSecondRoundThenThisPlayerWins() throws NotEnoughPlayerException {
+	public void whenGameStartAndFirstPlayerPutsAllStickInSecondRoundThenThisPlayerWins() throws NotEnoughPlayerException, GameAlreadyInPlayException {
 		prepareTwoPlayerGame();
 
 		when(dice.toss()).thenReturn(1, 1, 2, 2, 6);
@@ -165,6 +166,19 @@ public class GameTest {
 
 		List<Player> playersTurnList = playersTurn.getAllValues();
 		assertEquals("First turn are not played be the winning player", winningPlayer.getValue(), playersTurnList.get(0));
+
+	}
+
+	@Test(expected = GameAlreadyInPlayException.class)
+	public void whenTwoGamesStartedThenExceptionIsThown() throws NotEnoughPlayerException, GameAlreadyInPlayException, InterruptedException {
+		prepareTwoPlayerGame();
+		when(dice.toss()).thenReturn(1);
+		when(board.put(1)).thenReturn(0, 2);
+
+		Thread myThread = new Thread(new MyTestRunner(testee));
+		myThread.start();
+		Thread.sleep(1000);// ensure that first thread starts the game
+		testee.run();
 
 	}
 
@@ -194,5 +208,27 @@ public class GameTest {
 	private void prepareTwoPlayerGame() {
 		prepareTwoPlayer();
 		subscribeTwoPlayer();
+	}
+
+	private class MyTestRunner implements Runnable {
+		private Game testee;
+
+		public MyTestRunner(Game testee) {
+			super();
+			this.testee = testee;
+		}
+
+		@Override
+		public void run() {
+			try {
+				testee.run();
+			} catch (NotEnoughPlayerException e) {
+				e.printStackTrace();
+			} catch (GameAlreadyInPlayException e) {
+				e.printStackTrace();
+			}
+
+		}
+
 	}
 }

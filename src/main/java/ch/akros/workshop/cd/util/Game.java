@@ -3,10 +3,12 @@ package ch.akros.workshop.cd.util;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.ejb.Schedule;
 import javax.inject.Inject;
 
+import ch.akros.workshop.cd.exception.GameAlreadyInPlayException;
 import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
 
 public class Game {
@@ -21,6 +23,8 @@ public class Game {
 
 	private Map<Player, Integer> players = new HashMap<Player, Integer>();
 
+	private AtomicBoolean gameRunning = new AtomicBoolean(false);
+
 	public void subscribe(Player player) {
 		Integer oldState = players.put(player, Integer.valueOf(6));
 		if (oldState == null) {
@@ -28,7 +32,10 @@ public class Game {
 		}
 	}
 
-	public void run() throws NotEnoughPlayerException {
+	public void run() throws NotEnoughPlayerException, GameAlreadyInPlayException {
+		if (!gameRunning.compareAndSet(false, true)) {
+			throw new GameAlreadyInPlayException();
+		}
 		if (players.size() < 2) {
 			throw new NotEnoughPlayerException("Only " + players.size() + " players registered. At least 2 are needed");
 		}
@@ -51,6 +58,7 @@ public class Game {
 				}
 				if (won(currentPlayer)) {
 					gameLogger.playerWon(currentPlayer.getKey());
+					gameRunning.set(false);
 					return;
 				}
 			}
@@ -62,7 +70,9 @@ public class Game {
 		try {
 			run();
 		} catch (NotEnoughPlayerException e) {
-			gameLogger.gameNotReady();
+			gameLogger.gameNotReady("Not enough player");
+		} catch (GameAlreadyInPlayException e) {
+			gameLogger.gameNotReady("Game already running");
 		}
 	}
 
