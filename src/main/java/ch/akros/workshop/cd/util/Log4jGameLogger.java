@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Log4jGameLogger implements GameLogger {
-	Logger logger = LoggerFactory.getLogger(GameLogger.class);
+	private Logger logger = LoggerFactory.getLogger(GameLogger.class);
 
 	@Override
 	public void newSubscribtion(String playerName) {
@@ -30,6 +30,11 @@ public class Log4jGameLogger implements GameLogger {
 	@Override
 	public void gameNotReady(String explanation) {
 		logger.info("Game not Ready: " + explanation);
+	}
+
+	@Override
+	public void timerTriggered() {
+		logger.info("Game trigger fired, about to start a new Game");
 	}
 
 }

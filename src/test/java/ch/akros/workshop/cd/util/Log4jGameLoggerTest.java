@@ -29,6 +29,8 @@ public class Log4jGameLoggerTest {
 
 		testee.turn(player);
 
+		testee.timerTriggered();
+
 	}
 
 }

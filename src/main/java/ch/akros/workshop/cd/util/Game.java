@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.ejb.Schedule;
 import javax.inject.Inject;
 
 import ch.akros.workshop.cd.exception.GameAlreadyInPlayException;
@@ -33,6 +32,7 @@ public class Game {
 	}
 
 	public void run() throws NotEnoughPlayerException, GameAlreadyInPlayException {
+		System.out.println("----------------");
 		if (!gameRunning.compareAndSet(false, true)) {
 			throw new GameAlreadyInPlayException();
 		}
@@ -62,17 +62,6 @@ public class Game {
 					return;
 				}
 			}
-		}
-	}
-
-	@Schedule(second = "*/5")
-	public void timer() {
-		try {
-			run();
-		} catch (NotEnoughPlayerException e) {
-			gameLogger.gameNotReady("Not enough player");
-		} catch (GameAlreadyInPlayException e) {
-			gameLogger.gameNotReady("Game already running");
 		}
 	}
 

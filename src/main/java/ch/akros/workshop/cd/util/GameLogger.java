@@ -12,4 +12,6 @@ public interface GameLogger {
 
 	void gameNotReady(String explanation);
 
+	void timerTriggered();
+
 }
