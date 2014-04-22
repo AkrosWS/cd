@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.akros.workshop.cd.util;
+package ch.akros.workshop.cd.exception;
 
 import java.util.logging.Logger;
 

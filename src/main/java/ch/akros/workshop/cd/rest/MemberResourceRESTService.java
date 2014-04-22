@@ -42,7 +42,7 @@ import javax.ws.rs.core.Response;
 
 import ch.akros.workshop.cd.data.MemberRepository;
 import ch.akros.workshop.cd.model.Member;
-import ch.akros.workshop.cd.service.MemberRegistration;
+import ch.akros.workshop.cd.notUsedAnymore.MemberRegistration;
 
 /**
  * JAX-RS Example

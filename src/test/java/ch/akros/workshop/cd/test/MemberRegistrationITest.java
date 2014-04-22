@@ -31,9 +31,9 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ch.akros.workshop.cd.exception.Resources;
 import ch.akros.workshop.cd.model.Member;
-import ch.akros.workshop.cd.service.MemberRegistration;
-import ch.akros.workshop.cd.util.Resources;
+import ch.akros.workshop.cd.notUsedAnymore.MemberRegistration;
 
 //@formatter:off
 /**

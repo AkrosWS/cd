@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ch.akros.workshop.cd.model.Member;
-import ch.akros.workshop.cd.service.MemberRegistration;
+import ch.akros.workshop.cd.notUsedAnymore.MemberRegistration;
 
 // The @Model stereotype is a convenience mechanism to make this a request-scoped bean that has an
 // EL name
