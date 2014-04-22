@@ -66,6 +66,13 @@
 
     <dependencyManagement>
         <dependencies>
+			<dependency>
+				<groupId>org.jboss.arquillian</groupId>
+				<artifactId>arquillian-bom</artifactId>
+				<version>1.1.4.Final</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
             <!-- JBoss distributes a complete set of Java EE 6 APIs including a Bill 
                 of Materials (BOM). A BOM specifies the versions of a "stack" (or a collection) 
                 of artifacts. We use this here so that we always get the correct versions 
@@ -219,6 +226,12 @@
 			<version>1.7.7</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+		  <groupId>org.wildfly</groupId>
+		  <artifactId>wildfly-arquillian-container-embedded</artifactId>
+		  <version>8.0.0.Final</version>
+		  <scope>test</scope>
+		</dependency>
     </dependencies>
 
     <build>
@@ -260,7 +273,13 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>${version.surefire.plugin}</version>
                         <configuration>
-                            <skip>true</skip>
+                          <!--  <skip>true</skip>-->
+					      <systemProperties>
+					        <property>
+					          <name>java.util.logging.manager</name>
+					          <value>org.jboss.logmanager.LogManager</value>
+					        </property>
+					      </systemProperties>                            
                         </configuration>
                     </plugin>
                 </plugins>

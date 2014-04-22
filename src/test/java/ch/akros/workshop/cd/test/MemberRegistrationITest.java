@@ -20,18 +20,33 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import ch.akros.workshop.cd.model.Member;
 import ch.akros.workshop.cd.service.MemberRegistration;
 import ch.akros.workshop.cd.util.Resources;
 
-//@RunWith(Arquillian.class)
-public class MemberRegistrationTest {
-	// @Deployment
+//@formatter:off
+/**
+ * To run this test in embedded wildfly you got to set
+ * -Djava.util.logging.manager=org.jboss.logmanager.LogManager 
+ * in run runtime configuration VM Arguments
+ */
+//@formatter:on
+
+@RunWith(Arquillian.class)
+public class MemberRegistrationITest {
+
+	@Deployment
 	public static Archive<?> createTestArchive() {
 		return ShrinkWrap.create(WebArchive.class, "test.war").addClasses(Member.class, MemberRegistration.class, Resources.class)
 				.addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -39,16 +54,16 @@ public class MemberRegistrationTest {
 				.addAsWebInfResource("test-ds.xml");
 	}
 
-	// @Inject
+	@Inject
 	MemberRegistration memberRegistration;
 
-	// @Inject
+	@Inject
 	Logger log;
 
-	// @Test
+	@Test
 	public void testRegister() throws Exception {
 		Member newMember = new Member();
-		newMember.setName("Jane Doe");
+		newMember.setName("Jane Doede");
 		newMember.setEmail("jane@mailinator.com");
 		newMember.setPhoneNumber("2125551234");
 		memberRegistration.register(newMember);
