@@ -16,6 +16,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import ch.akros.workshop.cd.domain.Game;
+import ch.akros.workshop.cd.domain.Player;
 import ch.akros.workshop.cd.exception.GameAlreadyInPlayException;
 import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
 
@@ -60,7 +62,7 @@ public class GameTest {
 	private Board board;
 
 	@InjectMocks
-	private Game testee;
+	private SimpleGame testee;
 
 	@Test
 	public void ensurePlayerCanSubscribeWithoutException() {

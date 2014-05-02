@@ -5,13 +5,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ch.akros.workshop.cd.domain.Player;
 import ch.akros.workshop.cd.util.GameLogger;
-import ch.akros.workshop.cd.util.Player;
 
 public class MockGameLogger implements GameLogger {
 	private Logger logger = LoggerFactory.getLogger(GameLogger.class);
 
-	private volatile static AtomicBoolean timerTriggered;
+	private volatile static AtomicBoolean timerTriggered = new AtomicBoolean();
 
 	public MockGameLogger() {
 		super();

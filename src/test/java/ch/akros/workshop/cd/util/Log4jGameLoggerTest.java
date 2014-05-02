@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
+import ch.akros.workshop.cd.domain.Player;
+
 @RunWith(CdiRunner.class)
 public class Log4jGameLoggerTest {
 

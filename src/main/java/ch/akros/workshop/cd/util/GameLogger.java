@@ -1,5 +1,7 @@
 package ch.akros.workshop.cd.util;
 
+import ch.akros.workshop.cd.domain.Player;
+
 public interface GameLogger {
 
 	void newSubscribtion(String anyString);

@@ -3,6 +3,8 @@ package ch.akros.workshop.cd.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ch.akros.workshop.cd.domain.Player;
+
 public class Log4jGameLogger implements GameLogger {
 	private Logger logger = LoggerFactory.getLogger(GameLogger.class);
 

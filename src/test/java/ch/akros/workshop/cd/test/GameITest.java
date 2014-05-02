@@ -43,9 +43,10 @@ public class GameITest {
 
 	@Deployment
 	public static Archive<?> createTestArchive() {
-		return ShrinkWrap.create(WebArchive.class, "test.war")
-				.addPackages(true, "ch.akros.workshop.cd.util", "ch.akros.workshop.cd.service", "ch.akros.workshop.cd.exception")
-				.addClass(ch.akros.workshop.cd.test.MockGameLogger.class).deleteClass(Log4jGameLogger.class)
+		return ShrinkWrap
+				.create(WebArchive.class, "test.war")
+				.addPackages(true, "ch.akros.workshop.cd.util", "ch.akros.workshop.cd.service", "ch.akros.workshop.cd.exception",
+						"ch.akros.workshop.cd.domain").addClass(ch.akros.workshop.cd.test.MockGameLogger.class).deleteClass(Log4jGameLogger.class)
 				.addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
 				// Deploy our test datasource
 				.addAsWebInfResource("test-ds.xml");
@@ -57,7 +58,6 @@ public class GameITest {
 	@Test()
 	public void testAutomatedStartOfGame() throws InterruptedException {
 		Thread.sleep(10000L);
-
 		Assert.assertTrue("Game has not been tried to start", gameLogger.isTimerTriggered());
 	}
 

@@ -7,10 +7,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.inject.Inject;
 
+import ch.akros.workshop.cd.domain.Game;
+import ch.akros.workshop.cd.domain.Player;
 import ch.akros.workshop.cd.exception.GameAlreadyInPlayException;
 import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
 
-public class Game {
+public class SimpleGame implements Game {
 	@Inject
 	private GameLogger gameLogger;
 
@@ -32,8 +34,8 @@ public class Game {
 	}
 
 	public void run() throws NotEnoughPlayerException, GameAlreadyInPlayException {
-		System.out.println("----------------");
 		if (!gameRunning.compareAndSet(false, true)) {
+
 			throw new GameAlreadyInPlayException();
 		}
 		if (players.size() < 2) {
