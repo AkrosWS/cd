@@ -18,6 +18,8 @@ Steps:
 6. Dice implemented each toss returns random number between 1 and 6
 7. Board implemented for spaces 1-6
 8. Game Implemented
+9. Create Client Project and a Interface Project
+10. Callback Player Interface defined 
 
 
 
@@ -29,7 +31,6 @@ Steps:
 
 TODO
 - Create RIO Server Session Bean
-	- Define Callback
 	- Define Game Subscription
 - Create RIO Client Session Bean
 - Change Interface
