@@ -26,6 +26,7 @@ public class SimpleGame implements Game {
 
 	private AtomicBoolean gameRunning = new AtomicBoolean(false);
 
+	@Override
 	public void subscribe(Player player) {
 		Integer oldState = players.put(player, Integer.valueOf(6));
 		if (oldState == null) {
@@ -33,6 +34,7 @@ public class SimpleGame implements Game {
 		}
 	}
 
+	@Override
 	public void run() throws NotEnoughPlayerException, GameAlreadyInPlayException {
 		if (!gameRunning.compareAndSet(false, true)) {
 
