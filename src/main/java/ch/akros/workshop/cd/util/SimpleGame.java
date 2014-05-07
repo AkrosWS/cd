@@ -7,12 +7,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.inject.Inject;
 
-import ch.akros.workshop.cd.domain.Game;
 import ch.akros.workshop.cd.domain.Player;
 import ch.akros.workshop.cd.exception.GameAlreadyInPlayException;
 import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
 
-public class SimpleGame implements Game {
+public class SimpleGame {
 	@Inject
 	private GameLogger gameLogger;
 
@@ -26,15 +25,13 @@ public class SimpleGame implements Game {
 
 	private AtomicBoolean gameRunning = new AtomicBoolean(false);
 
-	@Override
-	public void subscribe(Player player) {
+	public void subscribe(Player player, String playerName) {
 		Integer oldState = players.put(player, Integer.valueOf(6));
 		if (oldState == null) {
-			gameLogger.newSubscribtion(player.getName());
+			gameLogger.newSubscribtion(playerName);
 		}
 	}
 
-	@Override
 	public void run() throws NotEnoughPlayerException, GameAlreadyInPlayException {
 		if (!gameRunning.compareAndSet(false, true)) {
 

@@ -16,7 +16,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import ch.akros.workshop.cd.domain.Game;
 import ch.akros.workshop.cd.domain.Player;
 import ch.akros.workshop.cd.exception.GameAlreadyInPlayException;
 import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
@@ -66,14 +65,14 @@ public class GameTest {
 
 	@Test
 	public void ensurePlayerCanSubscribeWithoutException() {
-		testee.subscribe(playerI);
+		testee.subscribe(playerI, playerI.getName());
 	}
 
 	@Test
 	public void whenPlayerSubscribesThenGameLoggerIsNotified() {
 		preparePlayerIMock();
 
-		testee.subscribe(playerI);
+		testee.subscribe(playerI, playerI.getName());
 
 		verify(gameLogger).newSubscribtion(playerI.getName());
 	}
@@ -82,7 +81,7 @@ public class GameTest {
 	public void whenPlayerSubscribedStartGameThenNotEnoughPlayerExceptionThrown() throws NotEnoughPlayerException, GameAlreadyInPlayException {
 		preparePlayerIMock();
 
-		testee.subscribe(playerI);
+		testee.subscribe(playerI, playerI.getName());
 
 		testee.run();
 
@@ -203,8 +202,8 @@ public class GameTest {
 	}
 
 	private void subscribeTwoPlayer() {
-		testee.subscribe(playerI);
-		testee.subscribe(playerII);
+		testee.subscribe(playerI, playerI.getName());
+		testee.subscribe(playerII, playerI.getName());
 	}
 
 	private void prepareTwoPlayerGame() {
@@ -213,9 +212,9 @@ public class GameTest {
 	}
 
 	private class MyTestRunner implements Runnable {
-		private Game testee;
+		private SimpleGame testee;
 
-		public MyTestRunner(Game testee) {
+		public MyTestRunner(SimpleGame testee) {
 			super();
 			this.testee = testee;
 		}
