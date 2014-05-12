@@ -21,6 +21,9 @@ public class SimpleGame {
 	@Inject
 	private Board board;
 
+	@Inject
+	private ScoreCaluculation scroing;
+
 	private Map<Player, Integer> players = new HashMap<Player, Integer>();
 
 	private AtomicBoolean gameRunning = new AtomicBoolean(false);
@@ -59,6 +62,10 @@ public class SimpleGame {
 				}
 				if (won(currentPlayer)) {
 					gameLogger.playerWon(currentPlayer.getKey());
+					Map<Player, Integer> score = scroing.score(players);
+					for (Entry<Player, Integer> entry : score.entrySet()) {
+						System.out.println("Player:" + entry.getKey() + " score:" + entry.getValue());
+					}
 					gameRunning.set(false);
 					return;
 				}

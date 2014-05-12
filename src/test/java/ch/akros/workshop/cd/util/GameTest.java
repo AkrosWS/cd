@@ -60,6 +60,9 @@ public class GameTest {
 	@Mock
 	private Board board;
 
+	@Mock
+	private ScoreCaluculation scoring;
+
 	@InjectMocks
 	private SimpleGame testee;
 
