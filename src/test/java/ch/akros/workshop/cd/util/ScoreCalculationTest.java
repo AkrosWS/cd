@@ -26,6 +26,8 @@ public class ScoreCalculationTest {
 	* 5. SP1 = 0H, SP2 = 5, SP3 = 7 => SP3 = 4P
 	* 6. Mit N Spieler
 	* 7. ignore negatrive hölzchen 
+	* 8. DONE SP1 = 0H, SP2 = 7 , SP3 = 4 SP4 = 4 => SP1 = 15, SP2= 4, SP3 and SP4=8
+
 
 	* 
 	* 
@@ -43,6 +45,9 @@ public class ScoreCalculationTest {
 
 	@Mock
 	private Player player3;
+
+	@Mock
+	private Player player4;
 
 	@Test
 	public void whenSp1Has0AndSp2Has5ThenSp1Get5() {
@@ -90,7 +95,22 @@ public class ScoreCalculationTest {
 		playerMap.put(player3, 7);
 		Map<Player, Integer> playerPoints = testee.score(playerMap);
 
-		Assert.assertEquals("Player 3 shall have 5 points", new Integer(4), playerPoints.get(player3));
+		Assert.assertEquals("Player 3 shall have 4 points", new Integer(4), playerPoints.get(player3));
+
+	}
+
+	@Test
+	public void whenSp1Has0AndSp2Has7SP3Has4SP4Has4ThenSp3ANDSp4Get8() {
+		Map<Player, Integer> playerMap = new HashMap<Player, Integer>();
+
+		playerMap.put(player1, 0);
+		playerMap.put(player2, 7);
+		playerMap.put(player3, 4);
+		playerMap.put(player4, 4);
+		Map<Player, Integer> playerPoints = testee.score(playerMap);
+
+		Assert.assertEquals("Player 3 shall have 8 points", new Integer(8), playerPoints.get(player3));
+		Assert.assertEquals("Player 4 shall have 8 points", new Integer(8), playerPoints.get(player4));
 
 	}
 }

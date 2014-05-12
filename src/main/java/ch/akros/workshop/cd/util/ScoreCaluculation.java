@@ -23,12 +23,21 @@ public class ScoreCaluculation {
 		}
 
 		Map<Player, Integer> resultMap = new HashMap<Player, Integer>();
+		BigDecimal totalScoreD = new BigDecimal(totalScore);
 		BigDecimal counter = BigDecimal.ONE;
+		int previousRemainingSticks = -1;
+		int counterAdjustmet = 0;
 		for (Entry<Player, Integer> entry : playerList) {
-			BigDecimal totalScoreD = new BigDecimal(totalScore);
+			int currentRemaining = playerMap.get(entry.getKey());
+			if (previousRemainingSticks == currentRemaining) {
+				counterAdjustmet++;
+			} else {
+				counterAdjustmet = 0;
+			}
 
-			resultMap.put(entry.getKey(), totalScoreD.divide(counter, BigDecimal.ROUND_UP).intValue());
+			resultMap.put(entry.getKey(), totalScoreD.divide(counter.subtract(new BigDecimal(counterAdjustmet)), BigDecimal.ROUND_UP).intValue());
 			counter = counter.add(BigDecimal.ONE);
+			previousRemainingSticks = currentRemaining;
 		}
 
 		return resultMap;
