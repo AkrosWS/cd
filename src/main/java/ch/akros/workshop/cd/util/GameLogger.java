@@ -20,4 +20,6 @@ public interface GameLogger {
 
 	void score(Map<Player, Integer> scoreMap);
 
+	void logScore(Player player1, int score, int gamesPlayed);
+
 }

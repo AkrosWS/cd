@@ -48,6 +48,8 @@ public class Log4jGameLoggerTest {
 
 		testee.score(players);
 
+		testee.logScore(player1, 4, 5);
+
 	}
 
 }

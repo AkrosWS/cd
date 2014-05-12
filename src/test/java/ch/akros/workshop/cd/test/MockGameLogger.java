@@ -58,4 +58,9 @@ public class MockGameLogger implements GameLogger {
 	public void score(Map<Player, Integer> scoreMap) {
 
 	}
+
+	@Override
+	public void logScore(Player player1, int gamesPlayed, int score) {
+
+	}
 }

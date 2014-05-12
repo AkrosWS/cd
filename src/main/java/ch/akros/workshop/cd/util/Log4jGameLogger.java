@@ -50,4 +50,10 @@ public class Log4jGameLogger implements GameLogger {
 
 	}
 
+	@Override
+	public void logScore(Player player1, int score, int gamesPlayed) {
+		logger.info("Player:" + player1.getName() + " Score:" + score + " Games played:" + gamesPlayed);
+
+	}
+
 }
