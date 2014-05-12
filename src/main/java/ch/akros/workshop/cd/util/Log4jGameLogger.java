@@ -1,5 +1,8 @@
 package ch.akros.workshop.cd.util;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +40,14 @@ public class Log4jGameLogger implements GameLogger {
 	@Override
 	public void timerTriggered() {
 		logger.info("Game trigger fired, about to start a new Game");
+	}
+
+	@Override
+	public void score(Map<Player, Integer> scoreMap) {
+		for (Entry<Player, Integer> entry : scoreMap.entrySet()) {
+			logger.info("Player:" + entry.getKey() + " Scores:" + entry.getValue());
+		}
+
 	}
 
 }

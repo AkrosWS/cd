@@ -1,5 +1,6 @@
 package ch.akros.workshop.cd.test;
 
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
@@ -51,5 +52,10 @@ public class MockGameLogger implements GameLogger {
 	public boolean isTimerTriggered() {
 		logger.info("timerTriggered called");
 		return timerTriggered.get();
+	}
+
+	@Override
+	public void score(Map<Player, Integer> scoreMap) {
+
 	}
 }

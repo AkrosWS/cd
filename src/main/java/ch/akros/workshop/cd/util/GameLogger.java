@@ -1,5 +1,7 @@
 package ch.akros.workshop.cd.util;
 
+import java.util.Map;
+
 import ch.akros.workshop.cd.domain.Player;
 
 public interface GameLogger {
@@ -15,5 +17,7 @@ public interface GameLogger {
 	void gameNotReady(String explanation);
 
 	void timerTriggered();
+
+	void score(Map<Player, Integer> scoreMap);
 
 }
