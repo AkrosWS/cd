@@ -20,7 +20,7 @@ public class ScoreCalculationTest {
 	/**
 	* 
 	* 1. DONE SP1 = 0H, SP2 = 5 => SP1 = 5P
-	* 2. SP1 = 0H, SP2 = 5 => SP2 = 2.5P =>3P
+	* 2. DONE SP1 = 0H, SP2 = 5 => SP2 = 2.5P =>3P
 	* 3. SP1 = 5H, SP2 = 0 => SP1 = 3P
 	* 4. SP1 = 5H, SP2 = 0 => SP0 = 5P
 	* 5. SP1 = 0H, SP2 = 5, SP3 = 7 => SP3 = 5P
@@ -54,4 +54,15 @@ public class ScoreCalculationTest {
 
 	}
 
+	@Test
+	public void whenSp1Has0AndSp2Has5ThenSp2Get3() {
+		Map<Player, Integer> playerMap = new HashMap<Player, Integer>();
+
+		playerMap.put(player1, 0);
+		playerMap.put(player2, 5);
+		Map<Player, Integer> playerPoints = testee.score(playerMap);
+
+		Assert.assertEquals("Player 2 shall have 3 points", new Integer(3), playerPoints.get(player2));
+
+	}
 }
