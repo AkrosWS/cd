@@ -24,6 +24,9 @@ public class SimpleGame {
 	@Inject
 	private ScoreCaluculation scroing;
 
+	@Inject
+	private Scoreboard scoreboard;
+
 	private Map<Player, Integer> players = new HashMap<Player, Integer>();
 
 	private AtomicBoolean gameRunning = new AtomicBoolean(false);
@@ -64,6 +67,7 @@ public class SimpleGame {
 					gameLogger.playerWon(currentPlayer.getKey());
 					Map<Player, Integer> score = scroing.score(players);
 					gameLogger.score(score);
+					scoreboard.newScore(score);
 					gameRunning.set(false);
 					return;
 				}
