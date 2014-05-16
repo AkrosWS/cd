@@ -1,5 +1,7 @@
 package ch.akros.workshop.cd.util;
 
+import java.util.Arrays;
+
 public class Board {
 	private boolean[] places = new boolean[5];
 
@@ -21,6 +23,10 @@ public class Board {
 	public void clear() {
 		places = new boolean[5];
 
+	}
+
+	public boolean[] getBoard() {
+		return Arrays.copyOf(places, places.length);
 	}
 
 }

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import javax.inject.Inject;
 
 import org.jglue.cdiunit.CdiRunner;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -23,6 +24,7 @@ import org.junit.runner.RunWith;
  * 5b. DONE new Board all places are empty
  * 6. DONE All places (1-5) shall behave the same
  * 7. DONE After clear board is empty again
+ * 8. DONE return Board state as a boolean array
  * 
  */
 //@formatter:on
@@ -102,6 +104,22 @@ public class BoardTest {
 		for (int i = 1; i < 6; i++) {
 			assertReturnZeroOnFirstPlacement(i);
 		}
+	}
+
+	@Test
+	public void whenGetBoardWithState10101ThenReturnBoaleanArray10101() {
+		testee.put(1);
+		testee.put(3);
+		testee.put(5);
+
+		Assert.assertTrue("Board place 1 is not true", testee.getBoard()[0]);
+		Assert.assertFalse("Board place 2 is not false", testee.getBoard()[1]);
+		Assert.assertTrue("Board place 3 is not true", testee.getBoard()[2]);
+		Assert.assertFalse("Board place 4 is not false", testee.getBoard()[3]);
+		Assert.assertTrue("Board place 5 is not true", testee.getBoard()[4]);
+
+		Assert.assertEquals("Array has to be 5 long", 5, testee.getBoard().length);
+
 	}
 
 	private int putAStick(int place) {

@@ -7,7 +7,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.jglue.cdiunit.CdiRunner;
@@ -73,7 +72,7 @@ public class GameTest {
 	private Scoreboard scoreboard;
 
 	@Spy
-	private HashMap<Player, Integer> players = new HashMap<Player, Integer>();
+	private PlayerMap players = new PlayerMap();
 
 	@InjectMocks
 	private SimpleGame testee;
@@ -224,7 +223,7 @@ public class GameTest {
 
 	}
 
-	private void preparePlayerMock(Player player, String playerName) {
+	public static void preparePlayerMock(Player player, String playerName) {
 		when(player.getName()).thenReturn(playerName);
 		when(player.keepPlaying()).thenReturn(true);
 	}
