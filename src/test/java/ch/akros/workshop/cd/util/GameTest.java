@@ -28,22 +28,22 @@ import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
 * 
 * 1. DONE Player can subscribe to the next game
 * 1a.DONE Log when a new player subscribes
-* 2. Start Game
+* 2. DONE Start Game
 * 2a.DONE Game can not be started before two players have subscribed
 * 2b.DONE Log status change on a game.
 * 2c.DONE Start Game every five second. 
 * 3. DONE Log which player won
 * 4. DONE At the end of a game start a new game with all the subscribed once. Player from the finished game are automatically re-subscribed.(Not a good Idea, new Game shall starts ever 5s)
 * 5. DONE call back player to decide if he wants to toss again.
-* 6. DONECreate a GameLogger to separate the logging from the game so that it can be validated
+* 6. DONE Create a GameLogger to separate the logging from the game so that it can be validated
 * 7. DONE Run the game
 * 7a.DONE First player manages to put all his stick, win.
 * 7b.DONE Second player manages to put all his stick, win.
 * 7c.DONE First player wins in second round.
 * 8. DONE Ensure not two games can run at the same time.
-* 9. If player.keeyPlaying throws an exception remove that player from the list and set his score to 0
-* 9a.remove player on exception
-* 9b.set score to zero
+* 9. DONE If player.keeyPlaying throws an exception remove that player from the list and set his score to 0
+* 9a.DONE remove player on exception
+* 9b.DONE set score to zero
 * 
 * 
 */
@@ -208,6 +208,19 @@ public class GameTest {
 		testee.run();
 
 		Assert.assertNull("Player III should not be in the map anymore", players.get(playerI));
+
+	}
+
+	@Test
+	public void whenKeepPlayingThrowsExceptionThenPlayersScore0() throws NotEnoughPlayerException, GameAlreadyInPlayException {
+		prepareTwoPlayerGame();
+		when(playerI.keepPlaying()).thenThrow(new RuntimeException());
+		when(dice.toss()).thenReturn(1);
+		when(board.put(1)).thenReturn(0, 2, 0);
+
+		testee.run();
+
+		verify(scoreboard).reset(playerI);
 
 	}
 

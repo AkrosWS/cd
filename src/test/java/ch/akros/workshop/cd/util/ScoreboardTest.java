@@ -20,6 +20,7 @@ import ch.akros.workshop.cd.domain.Player;
 * 
 * 1. DONE SP1 has 10 Punkte , SP2,5 => log Scoreboard SP1, SP2
 * 2. DONE SP1,10 , SP2,5 + new result SP1,1 , SP2,10 => log Scoreboard SP2,SP1
+* 3. DONE When reset player then Player score =0
 * 
 */
 //@formatter:on
@@ -68,6 +69,27 @@ public class ScoreboardTest {
 		inOrder.verify(gameLogger).logScore(eq(player2), eq(5), eq(1));
 		inOrder.verify(gameLogger).logScore(eq(player2), eq(15), eq(2));
 		inOrder.verify(gameLogger).logScore(eq(player1), eq(11), eq(2));
+	}
+
+	@Test
+	public void whenSP1Has5AndResetSP1THenSP1Has0() {
+		InOrder inOrder = inOrder(gameLogger);
+		Map<Player, Integer> scoreList = new HashMap<Player, Integer>();
+		scoreList.put(player2, 5);
+		scoreList.put(player1, 10);
+
+		testee.newScore(scoreList);
+
+		testee.reset(player1);
+
+		scoreList.put(player1, 6);
+		testee.newScore(scoreList);
+
+		inOrder.verify(gameLogger).logScore(eq(player1), eq(10), eq(1));
+		inOrder.verify(gameLogger).logScore(eq(player2), eq(5), eq(1));
+		inOrder.verify(gameLogger).logScore(eq(player2), eq(10), eq(2));
+		inOrder.verify(gameLogger).logScore(eq(player1), eq(6), eq(2));
+
 	}
 
 }

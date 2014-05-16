@@ -38,4 +38,14 @@ public class Scoreboard {
 		}
 
 	}
+
+	public void reset(Player player) {
+		for (Ranking rankedPlayer : ranking) {
+			if (rankedPlayer.getPlayer().equals(player)) {
+				ranking.remove(rankedPlayer);
+				break;
+			}
+		}
+		ranking.add(new Ranking(player, 0));
+	}
 }

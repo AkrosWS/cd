@@ -89,6 +89,7 @@ public class SimpleGame {
 			} catch (Throwable t) {
 				// players.remove(currentPlayer.getKey());
 				iter.remove();
+				scoreboard.reset(currentPlayer.getKey());
 			}
 		}
 		return keepPlaying && playerDecisionKeepPlaying;
