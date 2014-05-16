@@ -45,7 +45,7 @@ public class Log4jGameLogger implements GameLogger {
 	@Override
 	public void score(Map<Player, Integer> scoreMap) {
 		for (Entry<Player, Integer> entry : scoreMap.entrySet()) {
-			logger.info("Player:" + entry.getKey() + " Scores:" + entry.getValue());
+			logger.info("Player:" + entry.getKey().getName() + " Scores:" + entry.getValue());
 		}
 
 	}
