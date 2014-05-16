@@ -1,8 +1,9 @@
 package ch.akros.workshop.cd.util;
 
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.inject.Inject;
@@ -27,7 +28,8 @@ public class SimpleGame {
 	@Inject
 	private Scoreboard scoreboard;
 
-	private Map<Player, Integer> players = new HashMap<Player, Integer>();
+	@Inject
+	private Map<Player, Integer> players;
 
 	private AtomicBoolean gameRunning = new AtomicBoolean(false);
 
@@ -51,13 +53,15 @@ public class SimpleGame {
 		board.clear();
 
 		while (true) {
-			for (Entry<Player, Integer> currentPlayer : players.entrySet()) {
+			Set<Entry<Player, Integer>> playerSet = players.entrySet();
+			for (Iterator<Entry<Player, Integer>> iter = playerSet.iterator(); iter.hasNext();) {
+				Entry<Player, Integer> currentPlayer = iter.next();
 				gameLogger.turn(currentPlayer.getKey());
 				int toss = dice.toss();
 				int sticksReturned = board.put(toss);
 				updatePlayerSticks(currentPlayer, sticksReturned);
 
-				while ((!won(currentPlayer)) && (sticksReturned == 0) && (currentPlayer.getKey().keepPlaying())) {
+				while (keepPlaying(currentPlayer, sticksReturned, iter)) {
 					gameLogger.turn(currentPlayer.getKey());
 					toss = dice.toss();
 					sticksReturned = board.put(toss);
@@ -73,6 +77,21 @@ public class SimpleGame {
 				}
 			}
 		}
+	}
+
+	private boolean keepPlaying(Entry<Player, Integer> currentPlayer, int sticksReturned, Iterator<Entry<Player, Integer>> iter) {
+
+		boolean keepPlaying = (!won(currentPlayer)) && (sticksReturned == 0);
+		boolean playerDecisionKeepPlaying = false;
+		if (keepPlaying) {
+			try {
+				playerDecisionKeepPlaying = currentPlayer.getKey().keepPlaying();
+			} catch (Throwable t) {
+				// players.remove(currentPlayer.getKey());
+				iter.remove();
+			}
+		}
+		return keepPlaying && playerDecisionKeepPlaying;
 	}
 
 	private boolean won(Entry<Player, Integer> currentPlayer) {

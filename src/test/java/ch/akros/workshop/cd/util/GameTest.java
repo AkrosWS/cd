@@ -7,14 +7,17 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.jglue.cdiunit.CdiRunner;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 
 import ch.akros.workshop.cd.domain.Player;
 import ch.akros.workshop.cd.exception.GameAlreadyInPlayException;
@@ -38,6 +41,9 @@ import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
 * 7b.DONE Second player manages to put all his stick, win.
 * 7c.DONE First player wins in second round.
 * 8. DONE Ensure not two games can run at the same time.
+* 9. If player.keeyPlaying throws an exception remove that player from the list and set his score to 0
+* 9a.remove player on exception
+* 9b.set score to zero
 * 
 * 
 */
@@ -65,6 +71,9 @@ public class GameTest {
 
 	@Mock
 	private Scoreboard scoreboard;
+
+	@Spy
+	private HashMap<Player, Integer> players = new HashMap<Player, Integer>();
 
 	@InjectMocks
 	private SimpleGame testee;
@@ -186,6 +195,19 @@ public class GameTest {
 		myThread.start();
 		Thread.sleep(1000);// ensure that first thread starts the game
 		testee.run();
+
+	}
+
+	@Test
+	public void whenKeepPlayingThrowsExceptionThenRemovePlayer() throws NotEnoughPlayerException, GameAlreadyInPlayException {
+		prepareTwoPlayerGame();
+		when(playerI.keepPlaying()).thenThrow(new RuntimeException());
+		when(dice.toss()).thenReturn(1);
+		when(board.put(1)).thenReturn(0, 2, 0);
+
+		testee.run();
+
+		Assert.assertNull("Player III should not be in the map anymore", players.get(playerI));
 
 	}
 
