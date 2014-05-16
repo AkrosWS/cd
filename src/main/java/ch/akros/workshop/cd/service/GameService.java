@@ -1,6 +1,5 @@
 package ch.akros.workshop.cd.service;
 
-import javax.ejb.LocalBean;
 import javax.ejb.Remote;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
@@ -19,7 +18,6 @@ import ch.akros.workshop.cd.util.GameLogger;
 import ch.akros.workshop.cd.util.SimpleGame;
 
 @Remote
-@LocalBean
 @Startup
 @Singleton
 public class GameService implements Game {
