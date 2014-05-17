@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import ch.akros.workshop.cd.domain.Player;
 import ch.akros.workshop.cd.domain.SmartPlayer;
+import ch.akros.workshop.cd.domain.VerySmartPlayer;
 import ch.akros.workshop.cd.exception.GameAlreadyInPlayException;
 import ch.akros.workshop.cd.exception.NotEnoughPlayerException;
 
@@ -97,7 +98,11 @@ public class SimpleGame {
 		boolean playerDecisionKeepPlaying = false;
 		if (keepPlaying) {
 			try {
-				if (currentPlayer.getKey() instanceof SmartPlayer) {
+
+				if (currentPlayer.getKey() instanceof VerySmartPlayer) {
+					playerDecisionKeepPlaying = ((VerySmartPlayer) currentPlayer.getKey()).keepPlaying(board.getBoard(), getSickList(),
+							currentPlayer.getValue());
+				} else if (currentPlayer.getKey() instanceof SmartPlayer) {
 
 					playerDecisionKeepPlaying = ((SmartPlayer) currentPlayer.getKey()).keepPlaying(board.getBoard());
 				} else {
@@ -109,6 +114,15 @@ public class SimpleGame {
 			}
 		}
 		return keepPlaying && playerDecisionKeepPlaying;
+	}
+
+	private int[] getSickList() {
+		int[] stickList = new int[players.size()];
+		int counter = 0;
+		for (Integer sticks : players.values()) {
+			stickList[counter] = sticks;
+		}
+		return stickList;
 	}
 
 	private boolean won(Entry<Player, Integer> currentPlayer) {
