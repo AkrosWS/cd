@@ -31,9 +31,10 @@ public class SimpleGame {
 	private Scoreboard scoreboard;
 
 	@Inject
-	private PlayerMap players;
+	private volatile PlayerMap players;
 
 	private AtomicBoolean gameRunning = new AtomicBoolean(false);
+	private volatile boolean keepGameRunning = true;
 
 	public void subscribe(Player player, String playerName) {
 		Integer oldState = players.put(player, Integer.valueOf(6));
@@ -56,7 +57,7 @@ public class SimpleGame {
 			board.clear();
 			resetPlayerStick();
 
-			while (true) {
+			while (keepGameRunning) {
 				Set<Entry<Player, Integer>> playerSet = players.entrySet();
 				for (Iterator<Entry<Player, Integer>> iter = playerSet.iterator(); iter.hasNext();) {
 					Entry<Player, Integer> currentPlayer = iter.next();
@@ -84,6 +85,10 @@ public class SimpleGame {
 		} finally {
 			gameRunning.set(false);
 		}
+	}
+
+	public void stop() {
+		keepGameRunning = false;
 	}
 
 	private void resetPlayerStick() {
@@ -136,4 +141,5 @@ public class SimpleGame {
 			currentPlayer.setValue(currentPlayer.getValue() + 1);
 		}
 	}
+
 }

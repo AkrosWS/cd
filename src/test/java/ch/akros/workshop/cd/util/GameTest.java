@@ -193,7 +193,11 @@ public class GameTest {
 		Thread myThread = new Thread(new MyTestRunner(testee));
 		myThread.start();
 		Thread.sleep(1000);// ensure that first thread starts the game
-		testee.run();
+		try {
+			testee.run();
+		} finally {
+			testee.stop();
+		}
 
 	}
 
