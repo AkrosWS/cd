@@ -254,9 +254,9 @@
 			<!-- The JBoss AS plugin deploys your war to a local JBoss AS container -->
 			<!-- To use, run: mvn package jboss-as:deploy -->
 			<plugin>
-				<groupId>org.jboss.as.plugins</groupId>
-				<artifactId>jboss-as-maven-plugin</artifactId>
-				<version>${version.jboss.maven.plugin}</version>
+				<groupId>org.wildfly.plugins</groupId>
+				<artifactId>wildfly-maven-plugin</artifactId>
+				<version>1.0.1.Final</version>
 			</plugin>
 		</plugins>
 	</build>
