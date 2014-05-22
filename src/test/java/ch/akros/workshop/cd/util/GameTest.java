@@ -73,7 +73,7 @@ public class GameTest {
 	private Scoreboard scoreboard;
 
 	@Spy
-	private HashMap<Player, Integer> players = new HashMap<Player, Integer>();
+	private PlayerMap players = new PlayerMap();
 
 	@InjectMocks
 	private SimpleGame testee;
@@ -194,7 +194,11 @@ public class GameTest {
 		Thread myThread = new Thread(new MyTestRunner(testee));
 		myThread.start();
 		Thread.sleep(1000);// ensure that first thread starts the game
-		testee.run();
+		try {
+			testee.run();
+		} finally {
+			testee.stop();
+		}
 
 	}
 
@@ -224,7 +228,7 @@ public class GameTest {
 
 	}
 
-	private void preparePlayerMock(Player player, String playerName) {
+	public static void preparePlayerMock(Player player, String playerName) {
 		when(player.getName()).thenReturn(playerName);
 		when(player.keepPlaying()).thenReturn(true);
 	}

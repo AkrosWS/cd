@@ -29,9 +29,10 @@ public class SimpleGame {
 	private Scoreboard scoreboard;
 
 	@Inject
-	private Map<Player, Integer> players;
+	private volatile PlayerMap players;
 
 	private AtomicBoolean gameRunning = new AtomicBoolean(false);
+	private volatile boolean keepGameRunning = true;
 
 	public void subscribe(Player player, String playerName) {
 		Integer oldState = players.put(player, Integer.valueOf(6));
@@ -41,41 +42,56 @@ public class SimpleGame {
 	}
 
 	public void run() throws NotEnoughPlayerException, GameAlreadyInPlayException {
-		if (!gameRunning.compareAndSet(false, true)) {
+		try {
+			if (!gameRunning.compareAndSet(false, true)) {
 
-			throw new GameAlreadyInPlayException();
-		}
-		if (players.size() < 2) {
-			throw new NotEnoughPlayerException("Only " + players.size() + " players registered. At least 2 are needed");
-		}
+				throw new GameAlreadyInPlayException();
+			}
+			if (players.size() < 2) {
+				throw new NotEnoughPlayerException("Only " + players.size() + " players registered. At least 2 are needed");
+			}
 
-		gameLogger.gameStarts();
-		board.clear();
+			gameLogger.gameStarts();
+			board.clear();
+			resetPlayerStick();
 
-		while (true) {
-			Set<Entry<Player, Integer>> playerSet = players.entrySet();
-			for (Iterator<Entry<Player, Integer>> iter = playerSet.iterator(); iter.hasNext();) {
-				Entry<Player, Integer> currentPlayer = iter.next();
-				gameLogger.turn(currentPlayer.getKey());
-				int toss = dice.toss();
-				int sticksReturned = board.put(toss);
-				updatePlayerSticks(currentPlayer, sticksReturned);
-
-				while (keepPlaying(currentPlayer, sticksReturned, iter)) {
+			while (keepGameRunning) {
+				Set<Entry<Player, Integer>> playerSet = players.entrySet();
+				for (Iterator<Entry<Player, Integer>> iter = playerSet.iterator(); iter.hasNext();) {
+					Entry<Player, Integer> currentPlayer = iter.next();
 					gameLogger.turn(currentPlayer.getKey());
-					toss = dice.toss();
-					sticksReturned = board.put(toss);
+					int toss = dice.toss();
+					int sticksReturned = board.put(toss);
 					updatePlayerSticks(currentPlayer, sticksReturned);
-				}
-				if (won(currentPlayer)) {
-					gameLogger.playerWon(currentPlayer.getKey());
-					Map<Player, Integer> score = scroing.score(players);
-					gameLogger.score(score);
-					scoreboard.newScore(score);
-					gameRunning.set(false);
-					return;
+
+					while (keepPlaying(currentPlayer, sticksReturned, iter)) {
+						gameLogger.turn(currentPlayer.getKey());
+						toss = dice.toss();
+						sticksReturned = board.put(toss);
+						updatePlayerSticks(currentPlayer, sticksReturned);
+					}
+					if (won(currentPlayer)) {
+						gameLogger.playerWon(currentPlayer.getKey());
+						Map<Player, Integer> score = scroing.score(players);
+						gameLogger.score(score);
+						scoreboard.newScore(score);
+						gameRunning.set(false);
+						return;
+					}
 				}
 			}
+		} finally {
+			gameRunning.set(false);
+		}
+	}
+
+	public void stop() {
+		keepGameRunning = false;
+	}
+
+	private void resetPlayerStick() {
+		for (Entry<Player, Integer> entry : players.entrySet()) {
+			entry.setValue(6);
 		}
 	}
 
